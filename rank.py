@@ -16,8 +16,8 @@ SERVICES_COMPANIES = {
 }
 
 # Module level default sets and compiled regexes to avoid re-allocating them in loops
-DEFAULT_CORE_IR_SKILLS = {'embeddings', 'sentence-transformers', 'bge', 'e5', 'vector database', 'pinecone', 'weaviate', 'qdrant', 'milvus', 'faiss', 'elasticsearch', 'opensearch', 'hybrid search', 'ndcg', 'mrr', 'map', 'evaluation framework', 'retrieval', 'ranking', 'information retrieval'}
-DEFAULT_PREFERRED_ML_SKILLS = {'fine-tuning', 'lora', 'qlora', 'peft', 'xgboost', 'learning-to-rank', 'ltr', 'pytorch', 'tensorflow', 'nlp', 'transformers', 'hugging face', 'huggingface', 'bert', 'llm', 'large language models'}
+DEFAULT_CORE_IR_SKILLS = {'python', 'go', 'rust', 'langchain', 'gemini', 'rag', 'embeddings', 'faiss', 'pinecone', 'weaviate', 'qdrant'}
+DEFAULT_PREFERRED_ML_SKILLS = {'milvus', 'ndcg', 'mrr', 'bm25', 'vector database', 'sentence-transformers', 'git', 'rest'}
 DEFAULT_GENERAL_ENG_SKILLS = {'python', 'rest api', 'fastapi', 'docker', 'kubernetes', 'aws', 'gcp', 'distributed systems'}
 
 CV_REGEX = re.compile(r'computer vision|cv|image classification|object detection|cnn|speech recognition|tts|whisper')
