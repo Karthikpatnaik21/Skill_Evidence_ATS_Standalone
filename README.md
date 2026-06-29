@@ -79,13 +79,24 @@ Dynamically adjusts candidate scores based on availability and active platform s
 
 ## 🚀 Execution Guide
 
-### 1. Run the Candidate Ranker
+### 1. Install Dependencies
+Ensure you have installed the required libraries from `requirements.txt`. This is especially required for `.xlsx` and `.xlsm` exports.
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run the Candidate Ranker
 Execute candidate ranking against the challenge JSONL dataset:
 ```bash
 python rank.py --candidates "[PUB] India_runs_data_and_ai_challenge/[PUB] India_runs_data_and_ai_challenge/India_runs_data_and_ai_challenge/candidates.jsonl" --out "team_local.csv"
 ```
 
-### 2. Verify the Output Submission
+To export to Excel Macro-Enabled Format (.xlsm) or standard Excel (.xlsx), simply change the output file extension:
+```bash
+python rank.py --candidates "[PUB] India_runs_data_and_ai_challenge/[PUB] India_runs_data_and_ai_challenge/India_runs_data_and_ai_challenge/candidates.jsonl" --out "team_local.xlsm"
+```
+
+### 3. Verify the Output Submission
 Run the validation suite to crosscheck formatting, rank uniqueness, score ordering, and candidate alignment:
 ```bash
 python validate_submission.py

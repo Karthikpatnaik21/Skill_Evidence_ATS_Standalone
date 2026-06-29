@@ -564,7 +564,7 @@ def calculate_candidate_potential(candidate: dict) -> float:
 def main():
     parser = argparse.ArgumentParser(description="Redrob Intelligent Candidate Discovery & Ranking Engine")
     parser.add_argument("--candidates", required=True, help="Path to candidates dataset (JSONL or compressed JSONL.gz)")
-    parser.add_argument("--out", required=True, help="Output CSV path")
+    parser.add_argument("--out", required=True, help="Output file path (CSV, XLSX, or XLSM)")
     parser.add_argument("--deep-search", action="store_true", help="Enable live web-audit scraping simulation")
     parser.add_argument("--jd", help="Path to a custom JSON job description profile")
     parser.add_argument("--location-priority", help="Prioritize/filter candidates by location (comma-separated for multiple)")
@@ -691,15 +691,36 @@ def main():
         reasoning = generate_reasoning(candidate, rank, score, stage)
         csv_rows.append([cid, rank, score, reasoning])
         
-    # Write output to CSV
+    # Write output to CSV or Excel
     try:
-        with open(args.out, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f)
+        out_ext = os.path.splitext(args.out)[1].lower()
+        if out_ext in ['.xlsx', '.xlsm']:
+            try:
+                import xlsxwriter
+            except ImportError:
+                print("Error: 'xlsxwriter' module is required to export to Excel. Install it using 'pip install xlsxwriter'", file=sys.stderr)
+                sys.exit(1)
+            
+            workbook = xlsxwriter.Workbook(args.out)
+            worksheet = workbook.add_worksheet()
+            
             # Header
-            writer.writerow(["candidate_id", "rank", "score", "reasoning"])
-            writer.writerows(csv_rows)
+            headers = ["candidate_id", "rank", "score", "reasoning"]
+            for col_num, data in enumerate(headers):
+                worksheet.write(0, col_num, data)
+                
+            for row_num, row_data in enumerate(csv_rows, start=1):
+                for col_num, data in enumerate(row_data):
+                    worksheet.write(row_num, col_num, data)
+            workbook.close()
+        else:
+            with open(args.out, 'w', encoding='utf-8', newline='') as f:
+                writer = csv.writer(f)
+                # Header
+                writer.writerow(["candidate_id", "rank", "score", "reasoning"])
+                writer.writerows(csv_rows)
     except Exception as e:
-        print(f"Error writing output CSV: {e}", file=sys.stderr)
+        print(f"Error writing output file: {e}", file=sys.stderr)
         sys.exit(1)
         
     end_time = datetime.now()
